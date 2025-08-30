@@ -34,9 +34,23 @@
             font-size: 16px;
             cursor: pointer;
         }
+
+            nav {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        nav a {
+            color: #a05a2c;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 15px;
+        }
     </style>
 </head>
 <body>
+<nav>
+  <a href="/login">🔑 Login Admin</a>
+</nav>
 
 <h1>Bienvenue au Mariage 🎉</h1>
 <form id="menuForm">
@@ -90,7 +104,7 @@ document.getElementById("menuForm").addEventListener("submit", function(e) {
         table: data.get("table")
     };
 
-    fetch("http://localhost:5000/commande", {
+    fetch("/commande", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(payload)
