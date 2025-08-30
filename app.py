@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from flask_cors import CORS
 import json, os
 
 app = Flask(__name__)
+app.secret_key = "super-secret-key"  # clé pour la session
 CORS(app)
 
 COMMANDES_FILE = "commandes.json"
@@ -26,22 +27,42 @@ def save_commande(commande):
 def menu_page():
     return render_template("menu.html")
 
-@app.route("/commande", methods=["POST", "OPTIONS"])
+@app.route("/commande", methods=["POST"])
 def recevoir_commande():
-    if request.method == "OPTIONS":
-        return '', 200  # Réponse vide mais OK pour le preflight
-
     data = request.get_json()
     save_commande(data)
     return f"Commande de la table {data.get('table')} bien reçue !"
 
-# ======= ROUTES ADMIN ========
+# ======= LOGIN / LOGOUT ========
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        # Exemple simple (à remplacer par une base plus tard si besoin)
+        if username == "admin" and password == "EmmaJhon":
+            session["admin"] = True
+            return redirect(url_for("admin_page"))
+        else:
+            return render_template("login.html", error="❌ Identifiants incorrects")
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("admin", None)
+    return redirect(url_for("login"))
+
+# ======= ROUTES ADMIN (protégées) ========
 @app.route("/admin")
 def admin_page():
+    if not session.get("admin"):
+        return redirect(url_for("login"))
     return render_template("admin.html")
 
 @app.route("/commandes", methods=["GET"])
 def afficher_commandes():
+    if not session.get("admin"):
+        return jsonify({"error": "Accès refusé"}), 403
     return jsonify(load_commandes())
 
 # ======= MAIN ========
