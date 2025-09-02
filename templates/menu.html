@@ -2,122 +2,168 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Menu Réception de Mariage</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #fef6f0;
-            padding: 20px;
-            color: #333;
-        }
-        h1 {
-            text-align: center;
-            color: #a05a2c;
-        }
-        h2 {
-            margin-top: 30px;
-        }
-        label {
-            display: block;
-            margin: 5px 0;
-        }
-        input[type="number"] {
-            width: 50px;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #a05a2c;
-            color: white;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-            nav {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-        nav a {
-            color: #a05a2c;
-            text-decoration: none;
-            font-weight: bold;
-            margin-left: 15px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>🎉 Menu Réception de Mariage / Wedding Reception Menu 🎉</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fef6f0;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #a05a2c;
+    }
+    h2 {
+      margin-top: 30px;
+      color: #a05a2c;
+    }
+    label {
+      display: block;
+      margin: 5px 0;
+    }
+    input[type="number"] {
+      width: 60px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #a05a2c;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    nav {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+    nav a {
+      color: #a05a2c;
+      text-decoration: none;
+      font-weight: bold;
+      margin-left: 15px;
+    }
+    .disabled {
+      color: gray;
+    }
+  </style>
 </head>
 <body>
 <nav>
-  <a href="/login">🔑 Login Admin</a>
+  <a href="/login">🔑 Admin Login</a>
 </nav>
 
-<h1>Bienvenue au Mariage 🎉</h1>
+<h1>🎉 Menu Réception de Mariage / Wedding Reception Menu 🎉</h1>
 <form id="menuForm">
-    <h2>ENTRÉE</h2>
-    <label><input type="radio" name="entree" value="Salade César"> Salade César</label>
+  <h2>ENTRÉE / STARTERS</h2>
+  <label><input type="radio" name="entree" value="Salade César"> Salade César / Caesar Salad</label>
+  <label><input type="radio" name="entree" value="Sauce salade César"> Sauce salade César / Caesar Salad Dressing</label>
 
-    <h2>PLAT</h2>
-    <label><input type="radio" name="plat" value="Riz noir"> Riz noir</label>
-    <label><input type="radio" name="plat" value="Riz national"> Riz national</label>
+  <h2>PLAT / MAIN COURSE</h2>
+  <label><input type="radio" name="plat" value="Riz noir"> Riz noir / Black Rice</label>
+  <label><input type="radio" name="plat" value="Riz national"> Riz national / National Rice</label>
 
-    <h2>VIANDE</h2>
-    <label><input type="radio" name="viande" value="Cabrit"> Cabrit</label>
-    <label><input type="radio" name="viande" value="Poulet"> Poulet</label>
-    <label><input type="radio" name="viande" value="Porc"> Porc</label>
+  <h2>VIANDES / MEATS</h2>
+  <label><input type="radio" name="viande" value="Cabrit"> Cabrit / Goat</label>
+  <label><input type="radio" name="viande" value="Poulet"> Poulet / Chicken</label>
+  <label><input type="radio" name="viande" value="Porc"> Porc / Pork</label>
 
-    <h2>ACCOMPAGNEMENT</h2>
-    <label><input type="checkbox" name="accompagnement" value="Banane pesée"> Banane pesée</label>
-    <label><input type="checkbox" name="accompagnement" value="Pikliz"> Pikliz</label>
-    <label><input type="checkbox" name="accompagnement" value="Salade russe"> Salade russe</label>
+  <h2>ACCOMPAGNEMENT / SIDE DISHES</h2>
+  <label><input type="checkbox" name="accompagnement" value="Banane pesée"> Banane pesée / Fried Plantain</label>
+  <label><input type="checkbox" name="accompagnement" value="Pikliz"> Pikliz / Spicy Slaw</label>
+  <label><input type="checkbox" name="accompagnement" value="Salade russe"> Salade russe / Russian Salad</label>
 
-    <h2>BOISSONS</h2>
-    <label><input type="radio" name="boisson" value="Eau plate/gazeuse"> Eau plate/gazeuse</label>
-    <label><input type="radio" name="boisson" value="Thé glacé"> Thé glacé</label>
-    <label><input type="radio" name="boisson" value="Multifruit"> Multifruit</label>
-    <label><input type="radio" name="boisson" value="Coca-Cola"> Coca-Cola</label>
+  <h2>BOISSONS / DRINKS</h2>
+  <label><input type="radio" name="boisson" value="Eau plate"> Eau plate / Still Water</label>
+  <label><input type="radio" name="boisson" value="Eau gazeuse"> Eau gazeuse / Sparkling Water</label>
+  <label><input type="radio" name="boisson" value="Thé glacé"> Thé glacé / Iced Tea</label>
+  <label><input type="radio" name="boisson" value="Multifruit"> Multifruit / Multifruit</label>
+  <label><input type="radio" name="boisson" value="Coca-Cola"> Coca-Cola / Coca-Cola</label>
 
-    <h2>VIN</h2>
-    <label><input type="radio" name="vin" value="Vin rouge"> Vin rouge</label>
-    <label><input type="radio" name="vin" value="Vin blanc"> Vin blanc</label>
+  <h2>VINS / WINES</h2>
+  <label><input type="radio" name="vin" value="Vin rouge"> 1 verre de vin rouge / 1 glass of red wine</label>
+  <label><input type="radio" name="vin" value="Vin blanc"> 1 verre de vin blanc / 1 glass of white wine</label>
 
-    <p>Numéro de table : <input type="number" name="table" required></p>
+  <p>Numéro de table / Table number : <input type="number" name="table" required></p>
 
-    <button type="submit">Envoyer la commande</button>
+  <button type="submit">Envoyer la commande / Submit Order</button>
 </form>
 
 <p id="confirmation"></p>
 
 <script>
 document.getElementById("menuForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const form = e.target;
-    const data = new FormData(form);
-    const payload = {
-        entree: data.get("entree"),
-        plat: data.get("plat"),
-        viande: data.get("viande"),
-        accompagnement: data.getAll("accompagnement"),
-        boisson: data.get("boisson"),
-        vin: data.get("vin"),
-        table: data.get("table")
-    };
+  const form = e.target;
+  const data = new FormData(form);
+  const payload = {
+    entree: data.get("entree"),
+    plat: data.get("plat"),
+    viande: data.get("viande"),
+    accompagnement: data.getAll("accompagnement"),
+    boisson: data.get("boisson"),
+    vin: data.get("vin"),
+    table: data.get("table")
+  };
 
-    fetch("/commande", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(payload)
-    })
-    .then(res => res.text())
-    .then(msg => {
-        document.getElementById("confirmation").innerText = "✅ " + msg;
-        form.reset();
-    })
-    .catch(err => {
-        document.getElementById("confirmation").innerText = "❌ Erreur d'envoi.";
-    });
+  fetch("/commande", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.text())
+  .then(msg => {
+    document.getElementById("confirmation").innerText = "✅ " + msg;
+    form.reset();
+    desactiverEpuises();
+  })
+  .catch(err => {
+    document.getElementById("confirmation").innerText = "❌ Erreur d'envoi.";
+  });
 });
+
+// 🔹 Désactiver les plats épuisés (multilingue)
+async function desactiverEpuises() {
+  try {
+    const res = await fetch("/epuises", { cache: "no-store" });
+    const epuises = await res.json();
+
+    document.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(input => {
+      const label = input.parentElement;
+
+      // Retirer ancienne mention
+      const oldTag = label.querySelector(".epuise");
+      if (oldTag) oldTag.remove();
+
+      if (epuises.includes(input.value)) {
+        input.disabled = true;
+        label.classList.add("disabled");
+
+        const span = document.createElement("span");
+        span.className = "epuise";
+        span.style.color = "red";
+        span.style.fontWeight = "bold";
+        span.textContent = " (épuisé / sold out)";
+        label.appendChild(span);
+      } else {
+        input.disabled = false;
+        label.classList.remove("disabled");
+      }
+    });
+  } catch (err) {
+    console.error("Erreur chargement épuisés:", err);
+  }
+}
+
+// 🔄 Vérifie toutes les 5 secondes
+setInterval(desactiverEpuises, 5000);
+
+// Premier appel
+desactiverEpuises();
 </script>
 
 </body>
