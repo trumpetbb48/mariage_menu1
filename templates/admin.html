@@ -2,14 +2,14 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Commandes Cuisine</title>
+    <title>Admin - Commandes</title>
     <style>
         body {
             font-family: sans-serif;
             background-color: #fffaf4;
             padding: 20px;
         }
-        h1 {
+        h1, h2 {
             color: #8b0000;
         }
         .commande {
@@ -18,9 +18,39 @@
             margin: 10px 0;
             background: #f9f9f9;
         }
+        .livree {
+            background: #d4edda;
+        }
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-livree { background: #28a745; color: white; }
+        .btn-epuise { background: #dc3545; color: white; }
+        .btn-retirer { background: #6c757d; color: white; }
+        nav {
+            margin-bottom: 15px;
+        }
+        nav a {
+            margin-right: 10px;
+            color: #8b0000;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        #boutons-epuise {
+            margin-top: 15px;
+            padding: 10px;
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+        }
     </style>
 </head>
-<body><nav>
+<body>
+
+<nav>
   <a href="/">🍽️ Menu invité</a> |
   <a href="/admin">📋 Commandes</a> |
   <a href="/logout">🚪 Déconnexion</a>
@@ -30,31 +60,141 @@
 <h1>📋 Commandes reçues</h1>
 <div id="commandes"></div>
 
+<hr>
+<h2>🚫 Plats épuisés</h2>
+<ul id="epuises"></ul>
+
+<div id="boutons-epuise">
+    <h3>⚙️ Gérer les plats</h3>
+    <div id="liste-boutons"></div>
+</div>
+
 <script>
+    // Charger les commandes depuis le serveur
     async function chargerCommandes() {
-        const res = await fetch("/commandes");
+        const res = await fetch("/commandes", { cache: "no-store" });
         const commandes = await res.json();
         const container = document.getElementById("commandes");
-        container.innerHTML = '';
+        container.innerHTML = "";
 
         commandes.forEach(c => {
             const div = document.createElement("div");
-            div.className = "commande";
-            div.innerHTML = `
-                <strong>Table ${c.table}</strong><br>
-                Entrée: ${c.entree || "—"}<br>
-                Plat: ${c.plat || "—"}<br>
-                Viande: ${c.viande || "—"}<br>
-                Accompagnement: ${c.accompagnement.join(', ') || "—"}<br>
-                Boisson: ${c.boisson || "—"}<br>
-                Vin: ${c.vin || "—"}
-            `;
+            div.className = "commande" + (c.livree ? " livree" : "");
+
+            const boutonTexte = c.livree
+                ? "✅  servi/serve"
+                : "⏳ en attente/pending" ;
+
+
+
+            const bouton = `<button class="btn-livree" onclick="marquerLivree(${c.id}, ${!c.livree})">${boutonTexte}</button>`;
+
+            div.innerHTML = `<strong>Table ${c.table}</strong><br>
+                    Entrée: ${c.entree || "—"}<br>
+                    Plat: ${c.plat || "—"}<br>
+                    Viande: ${c.viande || "—"}<br>
+                    Accompagnement: ${c.accompagnement.join(', ') || "—"}<br>
+                    Boisson: ${c.boisson || "—"}<br>
+                    Vin: ${c.vin || "—"}<br>
+                    ${bouton}`;
+
             container.appendChild(div);
         });
     }
 
-    setInterval(chargerCommandes, 3000); // actualisation auto toutes les 3 sec
-    chargerCommandes();
+    // Charger plats épuisés
+    async function chargerEpuises() {
+        const res = await fetch("/epuises", { cache: "no-store" });
+        const epuises = await res.json();
+
+        // Mettre à jour la liste
+        const list = document.getElementById("epuises");
+        list.innerHTML = "";
+        epuises.forEach(p => {
+            const li = document.createElement("li");
+            li.innerHTML = `${p} <button class="btn-retirer" onclick="retirerEpuise('${p}')">🟢 Réactiver</button>`;
+            list.appendChild(li);
+        });
+
+        // Désactiver/activer les boutons selon état
+        document.querySelectorAll("#liste-boutons button").forEach(btn => {
+            const plat = btn.getAttribute("data-plat");
+            if (epuises.includes(plat)) {
+                btn.disabled = true;
+                btn.style.opacity = "0.5";
+            } else {
+                btn.disabled = false;
+                btn.style.opacity = "1";
+            }
+        });
+    }
+
+    // Marquer une commande livrée ou en attente
+    async function marquerLivree(id, etat) {
+        await fetch(`/commandes/${id}/livree`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ livree: etat })
+        });
+        chargerCommandes();
+    }
+
+    // Marquer un plat comme épuisé
+    async function marquerEpuise(plat) {
+        await fetch("/epuises", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ plat })
+        });
+        chargerEpuises();
+    }
+
+    // Retirer un plat de la liste des épuisés
+   async function retirerEpuise(plat) {
+  const res = await fetch("/epuises", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ plat })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    console.error("Erreur réactivation:", res.status, err);
+    alert("Réactivation échouée: " + (err.error || res.statusText));
+    return;
+  }
+  await chargerEpuises();
+}
+
+    // Liste de tous les plats dispo
+    const plats = [
+        "Salade César", "Sauce salade César",
+        "Riz noir", "Riz national",
+        "Cabrit", "Poulet", "Porc",
+        "Banane pesée", "Pikliz", "Salade russe",
+        "Eau plate", "Eau gazeuse", "Thé glacé", "Multifruit", "Coca-Cola",
+        "Vin rouge", "Vin blanc"
+    ];
+
+    // Générer les boutons épuisé
+    const listeBoutons = document.getElementById("liste-boutons");
+    plats.forEach(p => {
+        const btn = document.createElement("button");
+        btn.textContent = `🚫 ${p}`;
+        btn.className = "btn-epuise";
+        btn.setAttribute("data-plat", p);   // important pour gestion état
+        btn.onclick = () => marquerEpuise(p);
+        listeBoutons.appendChild(btn);
+    });
+
+    // Lancer après que la page est chargée
+    document.addEventListener("DOMContentLoaded", () => {
+        chargerCommandes();
+        chargerEpuises();
+        setInterval(() => {
+            chargerCommandes();
+            chargerEpuises();
+        }, 5000);
+    });
 </script>
 
 </body>
